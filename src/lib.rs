@@ -1,14 +1,34 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+mod random;
+
+use random::random_range;
+use std::collections::HashSet;
+
+pub type Position = (usize, usize);
+
+pub struct Minesweeper {
+    width: usize,
+    height: usize,
+    open_fields: HashSet<Position>,
+    mines: HashSet<Position>,
+    flagged_fields: HashSet<Position>,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl Minesweeper {
+    pub fn new(width: usize, height: usize, mine_count: usize) -> Minesweeper {
+        Minesweeper {
+            width,
+            height,
+            open_fields: HashSet::new(),
+            mines: {
+                let mut mines = HashSet::new();
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+                while mines.len() < mine_count {
+                    mines.insert((random_range(0, width), random_range(0, height)));
+                }
+
+                mines
+            },
+            flagged_fields: HashSet::new(),
+        }
     }
 }
