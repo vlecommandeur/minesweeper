@@ -4,13 +4,17 @@
 	<meta charset="UTF-8" />
 	<title>Minesweeper</title>
     <style>
-        body {
+        html {
             font-size: 200%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .field {
             text-decoration: none;
+            text-align: center;
+            width: 1.2rem;
+            height: 1.2rem;
+            line-height: 1.2rem;
         }
     </style>
 </head>
@@ -18,23 +22,22 @@
 	<div id="root"></div>
 
     <script type="module">
-        import init, { getState } from "./pkg/minesweeper.js";
+        import init, { getState, openField } from "./pkg/minesweeper.js";
 
         async function main() {
             await init();
 
-            render(getState());
+            render();
         }
 
-        function render(state) {
+        function render() {
             let root = document.getElementById('root');
             root.innerText = "";
-
-            let data = state.split("\n").map(row => row.trim().split(/\s+/));
+            
+            let data = getState().split("\n").map(row => row.trim().split(/\s+/));
 
             root.style.display = "inline-grid";
             root.style.gridTemplate = `repeat(${data.length}, auto) / repeat(${data[0].length}, auto)`;
-            root.style.gap = "5px";
 
             for (let y = 0; y < data.length; y++) {
                 for (let x = 0; x < data[y].length; x++) {
@@ -45,7 +48,9 @@
 
                     element.addEventListener("click", event => {
                         event.preventDefault();
-                        console.log(event);
+                        
+                        openField(x, y);
+                        render();
                     });
 
                     root.appendChild(element);
