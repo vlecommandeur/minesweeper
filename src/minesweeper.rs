@@ -31,7 +31,7 @@ impl Display for Minesweeper {
                     } else {
                         f.write_str("🟪 ")?;
                     }
-                } else if !self.open_fields.contains(&position) {
+                } else if self.mines.contains(&position) {
                     f.write_str("💣 ")?;
                 } else {
                     write!(f, " {} ", self.neighboring_mines(position))?;
