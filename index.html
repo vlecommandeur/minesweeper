@@ -14,10 +14,17 @@
 
         async function main() {
             await init();
-            console.log(getState())
+            
+            render(getState())
         }
 
-        main();
+        function render(state) {
+            let root = document.getElementById('root');
+
+            root.innerText = state;
+        }
+
+        main(); 
     </script>
 </body>
 </html>
